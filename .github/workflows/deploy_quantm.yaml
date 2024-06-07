@@ -1,0 +1,44 @@
+name: Deploy to Cloud Run
+
+on:
+  workflow_dispatch:
+    inputs:
+      changesetId:
+        description: "changeset Id to tag the container image"
+        required: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: print changeset id
+        run: echo changesetID ${{ inputs.changesetId }}
+
+      - name: Authenticate with GCP
+        id: auth
+        uses: "google-github-actions/auth@v1"
+        with:
+          token_format: access_token
+          credentials_json: ${{ secrets.GCP_JSON_KEY }}
+          access_token_lifetime: 300s
+
+      - name: Login into Google Artifact Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ${{ secrets.GCP_ARTIFACT_REPOSITORY }}
+          username: oauth2accesstoken
+          password: ${{ steps.auth.outputs.access_token }}
+
+      - name: Configure Docker
+        run: |
+          gcloud auth configure-docker
+
+      - name: Deploy
+        run: |
+          gcloud run deploy qsecond \
+          --region europe-west1 \
+          --image ${{ secrets.GCP_ARTIFACT_REPOSITORY }}/qsecond:${{ inputs.changesetId }} \
+          --platform managed \
+          --allow-unauthenticated \
+          --project ${{ secrets.GCP_PROJECT_ID }}
