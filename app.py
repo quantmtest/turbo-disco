@@ -181,7 +181,6 @@ def hello_geek():
             <h3>Hello from Quantm</h3>
             <h3>Hello from Quantm</h3>
             <h3>Hello from Quantm</h3>
-            <h3>Hello from Quantm</h3>
 
             """
 
