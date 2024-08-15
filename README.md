@@ -10,4 +10,3 @@ merge conflicts
 merge conflicts
 merge conflicts
 merge conflicts
-merge conflicts
