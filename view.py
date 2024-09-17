@@ -1,0 +1,3 @@
+def view():
+    print("view")
+
