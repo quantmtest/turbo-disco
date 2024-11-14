@@ -6,7 +6,6 @@ def hello_geek():
     return """
         <h1>Hello from Quantm</h1>
         <h1>Hello from Quantm</h1>
-        <h1>Hello from Quantm</h1>
     """
 
 
